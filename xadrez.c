@@ -1,53 +1,135 @@
 #include <stdio.h>
 
-int main() {
+/* =========================================================
+   FUNÇÕES RECURSIVAS PARA TORRE, BISPO E RAINHA
+   ========================================================= */
 
-    /* ========================
-       MOVIMENTO DA TORRE (for)
-       A torre se move em linha reta.
-       Simulação: 5 casas para a direita.
-       ======================== */
-    int casasTorre = 5;
-    printf("Movimento da Torre:\n");
+/* ---------------------------
+   TORRE – Recursividade simples
+   Move-se em linha reta (direita)
+   --------------------------- */
+void moverTorre(int casasRestantes) {
+    if (casasRestantes == 0) {
+        return; // caso base
+    }
 
-    for (int i = 1; i <= casasTorre; i++) {
+    printf("Direita\n");
+
+    moverTorre(casasRestantes - 1); // chamada recursiva
+}
+
+/* -----------------------------
+   RAINHA – Recursividade simples
+   Move-se para a esquerda
+   ----------------------------- */
+void moverRainha(int casasRestantes) {
+    if (casasRestantes == 0) {
+        return;
+    }
+
+    printf("Esquerda\n");
+    moverRainha(casasRestantes - 1);
+}
+
+/* ---------------------------------------------------
+   BISPO – Recursividade + loops aninhados
+   Lógica:
+   - Cada passo recursivo representa UMA diagonal.
+   - O movimento diagonal é simulado com dois loops:
+        vertical (externo) e horizontal (interno).
+   --------------------------------------------------- */
+void moverBispo(int diagonalRestante) {
+
+    if (diagonalRestante == 0) {
+        return; // caso base
+    }
+
+    /* Simulando diagonal para cima e direita:
+       - Loop externo = vertical (“Cima”)
+       - Loop interno = horizontal (“Direita”) */
+    for (int v = 0; v < 1; v++) {          // movimenta para cima
+        for (int h = 0; h < 1; h++) {      // movimenta para direita
+            printf("Cima, Direita\n");
+        }
+    }
+
+    moverBispo(diagonalRestante - 1);      // chamada recursiva
+}
+
+/* ============================================================
+   CAVALO – LOOPS COMPLEXOS ANINHADOS
+   Movimento desejado:
+   -> duas casas para CIMA
+   -> uma casa para DIREITA
+   Regras:
+     - loops aninhados
+     - múltiplas variáveis de controle
+     - continue e break necessários
+   ============================================================ */
+void moverCavalo() {
+
+    int movimentosVert = 2;  // duas casas para cima
+    int movimentosHoriz = 1; // uma casa para direita
+
+    printf("Movimento do Cavalo:\n");
+
+    for (int i = 0, controle = 10; i < movimentosVert; i++, controle--) {
+
+        // loop interno controlando condições extras
+        int passo = 0;
+
+        while (passo < 2) {
+
+            // continue usado para pular iterações irrelevantes
+            if (passo == 1 && i == 0) {
+                passo++; 
+                continue;
+            }
+
+            printf("Cima\n");
+            passo++;
+
+            // break para evitar repetições desnecessárias
+            if (passo == 2) {
+                break;
+            }
+        }
+    }
+
+    // Movimento final: direita
+    for (int j = 0; j < movimentosHoriz; j++) {
         printf("Direita\n");
     }
+}
 
+int main() {
+
+    /* ============================
+       TORRE – RECURSIVIDADE
+       ============================ */
+    printf("Movimento da Torre:\n");
+    moverTorre(5);
     printf("\n");
 
-    /* ================================
-       MOVIMENTO DO BISPO (while)
-       O bispo se move na diagonal.
-       Simulação: 5 casas na diagonal
-       para cima e à direita.
-       ================================ */
-    int casasBispo = 5;
-    int contadorBispo = 0;
-
+    /* ============================
+       BISPO – RECURSIVIDADE + LOOPS
+       ============================ */
     printf("Movimento do Bispo:\n");
-
-    while (contadorBispo < casasBispo) {
-        printf("Cima, Direita\n");
-        contadorBispo++;
-    }
-
+    moverBispo(5);
     printf("\n");
 
-    /* ======================================
-       MOVIMENTO DA RAINHA (do-while)
-       A rainha pode se mover em todas as direções.
-       Simulação: 8 casas para a esquerda.
-       ====================================== */
-    int casasRainha = 8;
-    int contadorRainha = 0;
-
+    /* ============================
+       RAINHA – RECURSIVIDADE
+       ============================ */
     printf("Movimento da Rainha:\n");
+    moverRainha(8);
+    printf("\n");
 
-    do {
-        printf("Esquerda\n");
-        contadorRainha++;
-    } while (contadorRainha < casasRainha);
+    /* ============================
+       CAVALO – LOOPS COMPLEXOS
+       ============================ */
+    moverCavalo();
+    printf("\n");
 
     return 0;
 }
